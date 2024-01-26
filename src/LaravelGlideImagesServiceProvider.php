@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton;
+namespace SimonVomEyser\LaravelGlideImages;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use VendorName\Skeleton\Commands\SkeletonCommand;
+use SimonVomEyser\LaravelGlideImages\Commands\LaravelGlideImagesCommand;
 
-class SkeletonServiceProvider extends PackageServiceProvider
+class LaravelGlideImagesServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
@@ -16,10 +16,10 @@ class SkeletonServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('skeleton')
+            ->name('laravel-glide-images')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_skeleton_table')
-            ->hasCommand(SkeletonCommand::class);
+            ->hasMigration('create_laravel-glide-images_table')
+            ->hasCommand(LaravelGlideImagesCommand::class);
     }
 }

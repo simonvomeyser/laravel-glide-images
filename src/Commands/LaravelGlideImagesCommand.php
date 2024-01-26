@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace SimonVomEyser\LaravelGlideImages\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class LaravelGlideImagesCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-glide-images';
 
     public $description = 'My command';
 
