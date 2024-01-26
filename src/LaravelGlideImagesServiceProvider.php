@@ -2,24 +2,27 @@
 
 namespace SimonVomEyser\LaravelGlideImages;
 
+use SimonVomEyser\LaravelGlideImages\Commands\ClearGlideImagesCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use SimonVomEyser\LaravelGlideImages\Commands\LaravelGlideImagesCommand;
 
 class LaravelGlideImagesServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
-        /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
+
+        app()->config["filesystems.disks.glide_public_path"] = [
+            'driver' => 'local',
+            'root' => public_path(),
+            'url' => env('APP_URL').'/',
+            'visibility' => 'public',
+            'throw' => false,
+        ];
+
         $package
             ->name('laravel-glide-images')
+            ->hasRoute('web')
             ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_laravel-glide-images_table')
-            ->hasCommand(LaravelGlideImagesCommand::class);
+            ->hasCommand(ClearGlideImagesCommand::class);
     }
 }
