@@ -1,8 +1,7 @@
 # On the fly image manipulations with Glide for Laravel
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/simonvomeyser/laravel-glide-images.svg?style=flat-square)](https://packagist.org/packages/simonvomeyser/laravel-glide-images)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/simonvomeyser/laravel-glide-images/run-tests?label=tests)](
 
-⚠️ This is a work-in-progress, the api might change considerably before the first release.
+⚠️ This is a work-in-progress, the api might change considerably before the first major release.
 
 This package provides a simple `glide(url, options)` php helper function to generate image urls with [Glide](https://glide.thephpleague.com/2.0/api/quick-reference/) on the fly in your templates.
 
