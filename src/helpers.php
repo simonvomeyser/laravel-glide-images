@@ -1,7 +1,8 @@
 <?php
 
 if (!function_exists('glide')) {
-    function glide($pathToImage, $args = [])
+
+    function glide($pathToImage, string | array $args  = [])
     {
         $leadingHttpPattern = "/^(http:\/\/|https:\/\/)/";
 
@@ -10,6 +11,10 @@ if (!function_exists('glide')) {
             url($pathToImage);
 
         $url = str_replace(url('/'), url('/' . config('glide-images.endpoint')), $url);
+
+        if (is_string($args)) {
+            $args = ['w' => $args];
+        }
 
         if (!array_key_exists('fit', $args)) {
             $args['fit'] = 'max';
