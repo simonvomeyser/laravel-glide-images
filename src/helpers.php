@@ -1,5 +1,8 @@
 <?php
 
+use League\Glide\Signatures\SignatureFactory;
+use League\Glide\Urls\UrlBuilderFactory;
+
 if (!function_exists('glide')) {
 
     function glide($pathToImage, string | array $args  = [])
@@ -19,6 +22,10 @@ if (!function_exists('glide')) {
         if (!array_key_exists('fit', $args)) {
             $args['fit'] = 'max';
         }
+
+        $httpSignature = SignatureFactory::create(config('app.key'));
+
+        $args['s'] = $httpSignature->generateSignature($url, $args);
 
         $queryString = http_build_query($args);
 

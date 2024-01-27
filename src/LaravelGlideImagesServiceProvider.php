@@ -14,7 +14,7 @@ class LaravelGlideImagesServiceProvider extends PackageServiceProvider
         app()->config["filesystems.disks.glide_public_path"] = [
             'driver' => 'local',
             'root' => public_path(),
-            'url' => env('APP_URL').'/',
+            'url' => config('app.url') . '/',
             'visibility' => 'public',
             'throw' => false,
         ];
