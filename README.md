@@ -1,19 +1,20 @@
-# This is my package laravel-glide-images
-
+# On the fly image manipulations with Glide for Laravel
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/simonvomeyser/laravel-glide-images.svg?style=flat-square)](https://packagist.org/packages/simonvomeyser/laravel-glide-images)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/simonvomeyser/laravel-glide-images/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/simonvomeyser/laravel-glide-images/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/simonvomeyser/laravel-glide-images/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/simonvomeyser/laravel-glide-images/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/simonvomeyser/laravel-glide-images.svg?style=flat-square)](https://packagist.org/packages/simonvomeyser/laravel-glide-images)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/simonvomeyser/laravel-glide-images/run-tests?label=tests)](
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+⚠️ This is a work-in-progress, the api might change considerably before the first release.
 
-## Support us
+This package provides a simple `glide(url, options)` php helper function to generate image urls with [Glide](https://glide.thephpleague.com/2.0/api/quick-reference/) on the fly in your templates.
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/laravel-glide-images.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/laravel-glide-images)
+It's aimed for easy of use and pretty opinionated in the current development stage.
 
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
+```index.blade.php
+<!-- will generate an image 500px in width -->
+<img src="{{ glide('images/image.jpg', 500) }}">
 
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+<!-- will generate an 500x500 image in grayscale -->
+<img src="{{ glide('images/image.jpg', ['w' => 500, 'h'=> 500 'filt' => 'grayscale']) }}">
+```
 
 ## Installation
 
@@ -23,44 +24,19 @@ You can install the package via composer:
 composer require simonvomeyser/laravel-glide-images
 ```
 
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="laravel-glide-images-migrations"
-php artisan migrate
-```
-
 You can publish the config file with:
 
 ```bash
 php artisan vendor:publish --tag="laravel-glide-images-config"
 ```
 
-This is the contents of the published config file:
-
-```php
-return [
-];
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="laravel-glide-images-views"
-```
-
 ## Usage
 
-```php
-$laravelGlideImages = new SimonVomEyser\LaravelGlideImages();
-echo $laravelGlideImages->echoPhrase('Hello, SimonVomEyser!');
-```
+wip
 
 ## Testing
 
-```bash
-composer test
-```
+wip
 
 ## Changelog
 
