@@ -13,10 +13,11 @@ class ClearGlideImagesCommand extends Command
 
     public function handle()
     {
-        $directory = storage_path('/app/' . config('glide-images.cache') );
+        $directory = storage_path('/app/'.config('glide-images.cache'));
 
         if (empty(File::exists($directory))) {
             $this->line('No images in glide cache');
+
             return 0;
         }
 
@@ -26,4 +27,3 @@ class ClearGlideImagesCommand extends Command
         return 0;
     }
 }
-

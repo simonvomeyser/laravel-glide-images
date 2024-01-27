@@ -1,11 +1,10 @@
 <?php
 
 use League\Glide\Signatures\SignatureFactory;
-use League\Glide\Urls\UrlBuilderFactory;
 
-if (!function_exists('glide')) {
+if (! function_exists('glide')) {
 
-    function glide($pathToImage, string | array $args  = [])
+    function glide($pathToImage, string|array $args = [])
     {
         $leadingHttpPattern = "/^(http:\/\/|https:\/\/)/";
 
@@ -13,13 +12,13 @@ if (!function_exists('glide')) {
             $pathToImage :
             url($pathToImage);
 
-        $url = str_replace(url('/'), url('/' . config('glide-images.endpoint')), $url);
+        $url = str_replace(url('/'), url('/'.config('glide-images.endpoint')), $url);
 
         if (is_string($args)) {
             $args = ['w' => $args];
         }
 
-        if (!array_key_exists('fit', $args)) {
+        if (! array_key_exists('fit', $args)) {
             $args['fit'] = 'max';
         }
 
@@ -30,11 +29,10 @@ if (!function_exists('glide')) {
         $queryString = http_build_query($args);
 
         $finalUrl = $url;
-        if (!empty($queryString)) {
-            $finalUrl .= '?' . $queryString;
+        if (! empty($queryString)) {
+            $finalUrl .= '?'.$queryString;
         }
 
         return $finalUrl;
     }
 }
-

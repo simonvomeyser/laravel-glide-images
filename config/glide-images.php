@@ -22,5 +22,5 @@ return [
     /**
      * This is a security measure to prevent users from resizing huge images to
      */
-    'max_image_size' => 2000*2000,
+    'max_image_size' => 2000 * 2000,
 ];

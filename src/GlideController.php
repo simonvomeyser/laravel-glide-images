@@ -4,7 +4,6 @@ namespace SimonVomEyser\LaravelGlideImages;
 
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use League\Glide\Responses\LaravelResponseFactory;
 use League\Glide\ServerFactory;
 use League\Glide\Signatures\SignatureException;
@@ -31,7 +30,7 @@ class GlideController
 
     private function validateSignature()
     {
-        if (!config('glide-images.secure')) {
+        if (! config('glide-images.secure')) {
             return;
         }
 
