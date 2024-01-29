@@ -3,7 +3,7 @@
 namespace SimonVomEyser\LaravelGlideImages\Commands;
 
 use Illuminate\Console\Command;
-use SimonVomEyser\LaravelGlideImages\File;
+use Illuminate\Support\Facades\File;
 
 class ClearGlideImagesCommand extends Command
 {
