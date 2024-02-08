@@ -104,4 +104,11 @@ class GlideHelperFunctionTest extends TestCase
         $this->assertStringNotContainsString('s=', $url);
     }
 
+    public function testUsingAnotherDomainWillSimplyReturnTheInputWithoutModification(){
+
+        $externalUrl = 'https://www.google.com/image.jpg';
+        $url = glide($externalUrl, 100);
+
+        $this->assertEquals($externalUrl, $url);
+    }
 }
