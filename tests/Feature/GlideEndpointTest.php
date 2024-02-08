@@ -32,7 +32,7 @@ class GlideEndpointTest extends TestCase
         $this->withoutExceptionHandling();
         $url = glide('images/test.png', 100);
 
-        $fixtureFileContent = file_get_contents(__DIR__.'/../fixtures/test.png');
+        $fixtureFileContent = file_get_contents(__DIR__.'/../Fixtures/test.png');
 
         Storage::fake();
         Storage::disk('glide_public_path')->put('images/test.png', $fixtureFileContent);
