@@ -1,5 +1,6 @@
 <?php
 
+use SimonVomEyser\LaravelGlideImages\Facades\LaravelGlideImages;
 use SimonVomEyser\LaravelGlideImages\Tests\TestCase;
 
 class GlideHelperFunctionTest extends TestCase
@@ -110,5 +111,18 @@ class GlideHelperFunctionTest extends TestCase
         $url = glide($externalUrl, 100);
 
         $this->assertEquals($externalUrl, $url);
+    }
+
+    public function testTheHelperFunctionWorksTheSameAsTheFacade(){
+        $endpoint = config('glide-images.endpoint');
+
+        $url = LaravelGlideImages::getUrl(url('/image.jpg'), [
+            'w' => 100,
+            'h' => 100,
+        ]);
+
+        $expectedUrl = url('/' . $endpoint . '/image.jpg?w=100&h=100');
+        $this->assertStringContainsString($expectedUrl, $url);
+
     }
 }
