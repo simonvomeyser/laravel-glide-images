@@ -46,17 +46,22 @@ class LaravelGlideImages
             $args['q'] = config('glide-images.quality');
         }
 
-        if (config('glide-images.secure')) {
-            $httpSignature = SignatureFactory::create(config('app.key'));
-            $args['s'] = $httpSignature->generateSignature($url, $args);
-        }
-
         // merge the original url args with the new args
         $args = array_merge($originalUrlArgs, $args);
 
         $urlComponents['query'] = http_build_query($args);
 
-        return $this->unparseUrl($urlComponents);
+        $url = $this->unparseUrl($urlComponents);
+
+        if (config('glide-images.secure')) {
+            $urlWithoutParams = explode('?', $url)[0];
+            $httpSignatureFactory = SignatureFactory::create(config('app.key'));
+            $signature = $httpSignatureFactory->generateSignature($urlWithoutParams, $args);
+
+            $url .= "&s=$signature";
+        }
+
+        return $url;
     }
 
     protected function unparseUrl($parsed_url)
