@@ -123,6 +123,16 @@ class GlideHelperFunctionTest extends TestCase
 
         $expectedUrl = url('/' . $endpoint . '/image.jpg?w=100&h=100');
         $this->assertStringContainsString($expectedUrl, $url);
+    }
+
+    public function testExistingParametersAreStillFoundInTheReturnedUrl(){
+
+        $url = glide(url('/image.jpg?foo=bar'), 100);
+
+        // the url contains the original query parameter
+        $this->assertStringContainsString('foo=bar', $url);
+        // the url contains the glide parameter
+        $this->assertStringContainsString("w=100", $url);
 
     }
 }
