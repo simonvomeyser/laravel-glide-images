@@ -9,7 +9,7 @@ class GlideEndpointTest extends TestCase
     {
         $glideEndpoint = config('glide-images.endpoint');
 
-        $response = $this->get('/' . $glideEndpoint . '/images/test.jpg');
+        $response = $this->get('/'.$glideEndpoint.'/images/test.jpg');
 
         $response->assertStatus(400); // 400 Bad Request, invalid signature
     }
@@ -32,7 +32,7 @@ class GlideEndpointTest extends TestCase
         $this->withoutExceptionHandling();
         $url = glide('images/test.png', 100);
 
-        $fixtureFileContent = file_get_contents(__DIR__ . '/../fixtures/test.png');
+        $fixtureFileContent = file_get_contents(__DIR__.'/../fixtures/test.png');
 
         Storage::fake();
         Storage::disk('glide_public_path')->put('images/test.png', $fixtureFileContent);
@@ -43,6 +43,4 @@ class GlideEndpointTest extends TestCase
             ->assertStatus(200)
             ->assertHeader('Content-Type', 'image/png');
     }
-
-
 }
