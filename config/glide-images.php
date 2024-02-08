@@ -20,7 +20,22 @@ return [
     'secure' => true,
 
     /**
-     * This is a security measure to prevent users from resizing huge images to
+     * This is a security measure to prevent users from resizing huge images
      */
     'max_image_size' => 2000 * 2000,
+
+    /**
+     * The default quality of the images
+     */
+    'quality' => 80,
+
+    /**
+     * The default fit, e.g. max, fill, crop, etc.
+     * "max" will resize the image to fit within the given
+     * dimensions while maintaining the original aspect ratio
+     *
+     * https://glide.thephpleague.com/1.0/api/size/
+     */
+    'fit' => 'max',
+
 ];
