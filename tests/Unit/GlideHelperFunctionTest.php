@@ -14,7 +14,7 @@ class GlideHelperFunctionTest extends TestCase
             'h' => 100,
         ]);
 
-        $expectedUrl = url('/' . $endpoint . '/image.jpg?w=100&h=100');
+        $expectedUrl = url('/'.$endpoint.'/image.jpg?w=100&h=100');
         $this->assertStringContainsString($expectedUrl, $url);
     }
 
@@ -22,7 +22,7 @@ class GlideHelperFunctionTest extends TestCase
     {
         $url = glide(url('/image.jpg'), 100);
 
-        $expectedUrl = url('/' . config('glide-images.endpoint') . '/image.jpg?w=100');
+        $expectedUrl = url('/'.config('glide-images.endpoint').'/image.jpg?w=100');
         $this->assertStringContainsString($expectedUrl, $url);
     }
 
@@ -83,14 +83,16 @@ class GlideHelperFunctionTest extends TestCase
     {
         $url = glide(glide(url('/image.jpg'), 100), 200);
 
-        $expectedUrl = url('/' . config('glide-images.endpoint') . '/image.jpg?w=200');
+        $expectedUrl = url('/'.config('glide-images.endpoint').'/image.jpg?w=200');
         $this->assertStringContainsString($expectedUrl, $url);
 
         // assert that "glide" is only once in the url
         $this->assertEquals(1, substr_count($url, 'glide'));
 
     }
-    public function testSignatureIsCreatedWhenConfigIsSet(){
+
+    public function testSignatureIsCreatedWhenConfigIsSet()
+    {
         config(['glide-images.secure' => true]);
 
         $url = glide(url('/image.jpg'), 100);
@@ -105,7 +107,8 @@ class GlideHelperFunctionTest extends TestCase
         $this->assertStringNotContainsString('s=', $url);
     }
 
-    public function testUsingAnotherDomainWillSimplyReturnTheInputWithoutModification(){
+    public function testUsingAnotherDomainWillSimplyReturnTheInputWithoutModification()
+    {
 
         $externalUrl = 'https://www.google.com/image.jpg';
         $url = glide($externalUrl, 100);
@@ -113,7 +116,8 @@ class GlideHelperFunctionTest extends TestCase
         $this->assertEquals($externalUrl, $url);
     }
 
-    public function testTheHelperFunctionWorksTheSameAsTheFacade(){
+    public function testTheHelperFunctionWorksTheSameAsTheFacade()
+    {
         $endpoint = config('glide-images.endpoint');
 
         $url = LaravelGlideImages::getUrl(url('/image.jpg'), [
@@ -121,18 +125,19 @@ class GlideHelperFunctionTest extends TestCase
             'h' => 100,
         ]);
 
-        $expectedUrl = url('/' . $endpoint . '/image.jpg?w=100&h=100');
+        $expectedUrl = url('/'.$endpoint.'/image.jpg?w=100&h=100');
         $this->assertStringContainsString($expectedUrl, $url);
     }
 
-    public function testExistingParametersAreStillFoundInTheReturnedUrl(){
+    public function testExistingParametersAreStillFoundInTheReturnedUrl()
+    {
 
         $url = glide(url('/image.jpg?foo=bar'), 100);
 
         // the url contains the original query parameter
         $this->assertStringContainsString('foo=bar', $url);
         // the url contains the glide parameter
-        $this->assertStringContainsString("w=100", $url);
+        $this->assertStringContainsString('w=100', $url);
 
     }
 }
