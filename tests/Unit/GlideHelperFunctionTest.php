@@ -1,5 +1,7 @@
 <?php
 
+namespace SimonVomEyser\LaravelGlideImages\Tests\Unit;
+
 use Illuminate\Foundation\Testing\WithFaker;
 use SimonVomEyser\LaravelGlideImages\Facades\LaravelGlideImages;
 use SimonVomEyser\LaravelGlideImages\Tests\TestCase;
