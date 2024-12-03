@@ -8,6 +8,10 @@ class LaravelGlideImages
 {
     public function getUrl($pathToImage, array|string $args = [])
     {
+        if (empty($pathToImage)) {
+            return '';
+        }
+
         // first, remove possible already existing glide endpoint from the path
         // this way, we can do something like glide(glide('path/to/image.jpg', 'w=100'), 'h=100'); and it will work
         $cleanPathToImage = str_replace('/'.config('glide-images.endpoint'), '', $pathToImage);

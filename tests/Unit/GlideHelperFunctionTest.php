@@ -1,10 +1,13 @@
 <?php
 
+use Illuminate\Foundation\Testing\WithFaker;
 use SimonVomEyser\LaravelGlideImages\Facades\LaravelGlideImages;
 use SimonVomEyser\LaravelGlideImages\Tests\TestCase;
 
 class GlideHelperFunctionTest extends TestCase
 {
+    use WithFaker;
+
     public function testReturnsExpectedFormattedData()
     {
         $endpoint = config('glide-images.endpoint');
@@ -139,5 +142,10 @@ class GlideHelperFunctionTest extends TestCase
         // the url contains the glide parameter
         $this->assertStringContainsString('w=100', $url);
 
+    }
+
+    public function testReturningEmptyStringIfNullishPassed() {
+        $this->assertEquals('', glide(null));
+        $this->assertEquals('', glide(''));
     }
 }
