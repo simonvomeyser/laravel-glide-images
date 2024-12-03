@@ -5,7 +5,7 @@
 
 This package provides a simple `glide(url, options)` php helper function to generate image urls with [Glide](https://glide.thephpleague.com/2.0/api/quick-reference/) on the fly in your templates.
 
-It's aimed for ease of use and simplicity, just install this and use the `glide()` helper to handle almost anything
+It's aimed for ease of use and simplicity, just install this and use the `glide()` helper to handle almost anything. This package handles the setup of the endpoint for you.
 
 ```index.blade.php
 <!-- will generate an image 500px in width -->
