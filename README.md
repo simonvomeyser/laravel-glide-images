@@ -5,7 +5,7 @@
 
 This package provides a simple `glide(url, options)` php helper function to generate image urls with [Glide](https://glide.thephpleague.com/2.0/api/quick-reference/) on the fly in your templates.
 
-It's aimed for easy of use and pretty opinionated in the current development stage.
+It's aimed for ease of use and simplicity, just install this and use the `glide()` helper to handle almost anything
 
 ```index.blade.php
 <!-- will generate an image 500px in width -->
@@ -13,6 +13,9 @@ It's aimed for easy of use and pretty opinionated in the current development sta
 
 <!-- will generate an 500x500 image in grayscale -->
 <img src="{{ glide('images/image.jpg', ['w' => 500, 'h'=> 500 'filt' => 'grayscale']) }}">
+
+<!-- will also work -->
+<img src="{{ glide(url('images/image.jpg')) }}">
 ```
 
 ## Installation
