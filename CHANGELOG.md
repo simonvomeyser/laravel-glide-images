@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-glide-images` will be documented in this file.
 
+## Bug fixes and maintenance - 2024-12-03
+
+- Fixed a small bug when calling helper with null
+- Dependencies
+- Documentation and readme
+
 ## 0.0.5 - 2024-02-10
 
 - Fixed an error where passing null to helper function would cause an error
