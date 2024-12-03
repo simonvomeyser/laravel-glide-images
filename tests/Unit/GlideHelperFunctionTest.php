@@ -10,7 +10,7 @@ class GlideHelperFunctionTest extends TestCase
 {
     use WithFaker;
 
-    public function testReturnsExpectedFormattedData()
+    public function test_returns_expected_formatted_data()
     {
         $endpoint = config('glide-images.endpoint');
 
@@ -23,7 +23,7 @@ class GlideHelperFunctionTest extends TestCase
         $this->assertStringContainsString($expectedUrl, $url);
     }
 
-    public function testShorthandHelpersWork()
+    public function test_shorthand_helpers_work()
     {
         $url = glide(url('/image.jpg'), 100);
 
@@ -31,7 +31,7 @@ class GlideHelperFunctionTest extends TestCase
         $this->assertStringContainsString($expectedUrl, $url);
     }
 
-    public function testWorksWithRelativeUrls()
+    public function test_works_with_relative_urls()
     {
         $appUrl = config('app.url');
         $endpoint = config('glide-images.endpoint');
@@ -55,7 +55,7 @@ class GlideHelperFunctionTest extends TestCase
         $this->assertStringContainsString($expectedUrl, $url);
     }
 
-    public function testAddsDefaultQualityAndFitToUrl()
+    public function test_adds_default_quality_and_fit_to_url()
     {
         $quality = config('glide-images.quality');
         $fit = config('glide-images.fit');
@@ -84,7 +84,7 @@ class GlideHelperFunctionTest extends TestCase
         $this->assertStringContainsString('fit=fill', $url);
     }
 
-    public function testMultipleCallsStillCreateValidUrl()
+    public function test_multiple_calls_still_create_valid_url()
     {
         $url = glide(glide(url('/image.jpg'), 100), 200);
 
@@ -96,7 +96,7 @@ class GlideHelperFunctionTest extends TestCase
 
     }
 
-    public function testSignatureIsCreatedWhenConfigIsSet()
+    public function test_signature_is_created_when_config_is_set()
     {
         config(['glide-images.secure' => true]);
 
@@ -112,7 +112,7 @@ class GlideHelperFunctionTest extends TestCase
         $this->assertStringNotContainsString('s=', $url);
     }
 
-    public function testUsingAnotherDomainWillSimplyReturnTheInputWithoutModification()
+    public function test_using_another_domain_will_simply_return_the_input_without_modification()
     {
 
         $externalUrl = 'https://www.google.com/image.jpg';
@@ -121,7 +121,7 @@ class GlideHelperFunctionTest extends TestCase
         $this->assertEquals($externalUrl, $url);
     }
 
-    public function testTheHelperFunctionWorksTheSameAsTheFacade()
+    public function test_the_helper_function_works_the_same_as_the_facade()
     {
         $endpoint = config('glide-images.endpoint');
 
@@ -134,7 +134,7 @@ class GlideHelperFunctionTest extends TestCase
         $this->assertStringContainsString($expectedUrl, $url);
     }
 
-    public function testExistingParametersAreStillFoundInTheReturnedUrl()
+    public function test_existing_parameters_are_still_found_in_the_returned_url()
     {
 
         $url = glide(url('/image.jpg?foo=bar'), 100);
@@ -146,7 +146,8 @@ class GlideHelperFunctionTest extends TestCase
 
     }
 
-    public function testReturningEmptyStringIfNullishPassed() {
+    public function test_returning_empty_string_if_nullish_passed()
+    {
         $this->assertEquals('', glide(null));
         $this->assertEquals('', glide(''));
     }

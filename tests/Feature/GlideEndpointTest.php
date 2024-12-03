@@ -5,7 +5,7 @@ use SimonVomEyser\LaravelGlideImages\Tests\TestCase;
 
 class GlideEndpointTest extends TestCase
 {
-    public function testForExistenceOfEndpoint()
+    public function test_for_existence_of_endpoint()
     {
         $glideEndpoint = config('glide-images.endpoint');
 
@@ -14,7 +14,7 @@ class GlideEndpointTest extends TestCase
         $response->assertStatus(400); // 400 Bad Request, invalid signature
     }
 
-    public function testForValidSignatureButFileNotFoundException()
+    public function test_for_valid_signature_but_file_not_found_exception()
     {
         $this->withoutExceptionHandling();
 
@@ -27,7 +27,7 @@ class GlideEndpointTest extends TestCase
         $response->assertStatus(500);
     }
 
-    public function testForValidSignatureAndFileExists()
+    public function test_for_valid_signature_and_file_exists()
     {
         $this->withoutExceptionHandling();
         $url = glide('images/test.png', 100);
