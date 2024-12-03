@@ -2,6 +2,11 @@
 
 All notable changes to `laravel-glide-images` will be documented in this file.
 
+## 0.0.5 - 2024-02-10
+
+- Fixed an error where passing null to helper function would cause an error
+- `glide(null)` will now return an empty string
+
 ## 0.0.4 - 2024-02-08
 
 - Fix error with signature
