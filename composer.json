@@ -16,16 +16,15 @@
         }
     ],
     "require": {
-        "php": "^8.1",
-        "illuminate/contracts": "^10.0",
-        "league/glide-laravel": "^1.0",
-        "spatie/laravel-package-tools": "^1.14.0"
+        "php": "^8.3",
+        "league/glide-symfony": "^2.0",
+        "spatie/laravel-package-tools": "^1.16.2"
     },
     "require-dev": {
         "larastan/larastan": "^2.0.1",
         "laravel/pint": "^1.0",
-        "nunomaduro/collision": "^7.8",
-        "orchestra/testbench": "^8.8",
+        "nunomaduro/collision": "^8.1",
+        "orchestra/testbench": "^9.0",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
