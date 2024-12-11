@@ -1,5 +1,7 @@
 <?php
 
+namespace SimonVomEyser\LaravelGlideImages\Tests\Feature;
+
 use Illuminate\Support\Facades\Storage;
 use League\Glide\Filesystem\FileNotFoundException;
 use SimonVomEyser\LaravelGlideImages\Tests\TestCase;
