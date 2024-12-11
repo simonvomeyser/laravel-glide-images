@@ -2,6 +2,11 @@
 
 All notable changes to `laravel-glide-images` will be documented in this file.
 
+## Laravel 11.x compatibility   - 2024-12-11
+
+- Update for use with laravel 11.x, php 8.3
+- Remove glide laravel dep, see https://github.com/thephpleague/glide-laravel/issues/11
+
 ## Bug fixes and maintenance - 2024-12-03
 
 - Fixed a small bug when calling helper with null
