@@ -2,6 +2,11 @@
 
 All notable changes to `laravel-glide-images` will be documented in this file.
 
+## External URLs and publish config file bug - 2025-01-02
+
+- Support for external URLs in `glide()` helper. Remote images are automatically downloaded, processed, and cached.
+- Fixed bug where config file was not published #7
+
 ## Laravel 11.x compatibility   - 2024-12-11
 
 - Update for use with laravel 11.x, php 8.3
