@@ -87,7 +87,7 @@ class GlideEndpointTest extends TestCase
         $url = glide($externalUrl, 100);
 
         \Illuminate\Support\Facades\Http::fake([
-            'example.com/*' => \Illuminate\Support\Facades\Http::response(file_get_contents(__DIR__.'/../Fixtures/test.png'), 200),
+            'example.com/*' => \Illuminate\Support\Facades\Http::response(file_get_contents(__DIR__.'/../Fixtures/test.png'), 200, ['Content-Type' => 'image/png']),
         ]);
 
         $response = $this->get($url);
@@ -108,7 +108,7 @@ class GlideEndpointTest extends TestCase
         $url = glide($externalUrl, 100);
 
         \Illuminate\Support\Facades\Http::fake([
-            'example.com/*' => \Illuminate\Support\Facades\Http::response(file_get_contents(__DIR__.'/../Fixtures/test.png'), 200),
+            'example.com/*' => \Illuminate\Support\Facades\Http::response(file_get_contents(__DIR__.'/../Fixtures/test.png'), 200, ['Content-Type' => 'image/png']),
         ]);
 
         // First request to fill cache
@@ -118,5 +118,19 @@ class GlideEndpointTest extends TestCase
         // Second request should hit cache and NOT download the image again
         $this->get($url)->assertStatus(200);
         \Illuminate\Support\Facades\Http::assertSentCount(1); // Still 1
+    }
+
+    public function test_fails_if_remote_url_is_not_an_image()
+    {
+        $externalUrl = 'https://example.com/not-an-image.txt';
+        $url = glide($externalUrl, 100);
+
+        \Illuminate\Support\Facades\Http::fake([
+            'example.com/*' => \Illuminate\Support\Facades\Http::response('this is just a text file', 200, ['Content-Type' => 'text/plain']),
+        ]);
+
+        $response = $this->get($url);
+
+        $response->assertStatus(404);
     }
 }

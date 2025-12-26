@@ -82,13 +82,22 @@ class GlideController
         // Only download if we don't already have it (though it should be deleted after each request)
         if (! file_exists($path)) {
             $response = Http::get($url);
-            if ($response->failed()) {
+
+            if ($response->failed() || ! $this->isImage($response)) {
                 abort(404, 'Remote image not found');
             }
+
             file_put_contents($path, $response->body());
         }
 
         return $filename;
+    }
+
+    private function isImage($response)
+    {
+        $contentType = $response->header('Content-Type');
+
+        return str_starts_with($contentType, 'image/');
     }
 
     private function validateSignature()
