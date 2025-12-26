@@ -13,16 +13,16 @@ class ClearGlideImagesCommand extends Command
 
     public function handle()
     {
-        $directory = storage_path('/app/'.config('glide-images.cache'));
+        // The cache directory contains both the manipulated images and the
+        // temporary remote source images (in the .remote-sources subdirectory).
+        $directory = storage_path('app/'.config('glide-images.cache'));
 
-        if (empty(File::exists($directory))) {
-            $this->line('No images in glide cache');
-
-            return 0;
+        if (File::exists($directory)) {
+            File::deleteDirectory($directory);
+            $this->info('Glide cache and remote images cleared.');
+        } else {
+            $this->line('Glide cache is already empty.');
         }
-
-        File::deleteDirectory($directory);
-        $this->line('Entire glide cache directory deleted.');
 
         return 0;
     }

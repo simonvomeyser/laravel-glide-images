@@ -112,13 +112,14 @@ class GlideHelperFunctionTest extends TestCase
         $this->assertStringNotContainsString('s=', $url);
     }
 
-    public function test_using_another_domain_will_simply_return_the_input_without_modification()
+    public function test_using_another_domain_will_still_work()
     {
-
         $externalUrl = 'https://www.google.com/image.jpg';
         $url = glide($externalUrl, 100);
 
-        $this->assertEquals($externalUrl, $url);
+        $endpoint = config('glide-images.endpoint');
+        $expectedUrl = url('/'.$endpoint.'/'.$externalUrl.'?w=100');
+        $this->assertStringContainsString($expectedUrl, $url);
     }
 
     public function test_the_helper_function_works_the_same_as_the_facade()
@@ -144,6 +145,23 @@ class GlideHelperFunctionTest extends TestCase
         // the url contains the glide parameter
         $this->assertStringContainsString('w=100', $url);
 
+    }
+
+    public function test_external_url_with_existing_parameters_works()
+    {
+        $externalUrl = 'https://www.google.com/image.jpg?foo=bar';
+        $url = glide($externalUrl, 100);
+
+        $endpoint = config('glide-images.endpoint');
+        // We expect the external URL in the path to NOT contain the query string,
+        // but the query string should be present in the final URL's query part.
+        $expectedPath = '/'.$endpoint.'/https://www.google.com/image.jpg';
+        $this->assertStringContainsString($expectedPath, $url);
+        $this->assertStringContainsString('foo=bar', $url);
+        $this->assertStringContainsString('w=100', $url);
+
+        // Ensure we don't have double question marks or duplicated params in the path part
+        $this->assertStringNotContainsString('image.jpg?foo=bar?', $url);
     }
 
     public function test_returning_empty_string_if_nullish_passed()

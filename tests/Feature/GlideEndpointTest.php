@@ -46,4 +46,20 @@ class GlideEndpointTest extends TestCase
             ->assertStatus(200)
             ->assertHeader('Content-Type', 'image/png');
     }
+
+    public function test_for_external_url()
+    {
+        // $this->withoutExceptionHandling();
+        $externalUrl = 'https://raw.githubusercontent.com/simonvomeyser/laravel-glide-images/main/tests/Fixtures/test.png';
+        $url = glide($externalUrl, 100);
+
+        $response = $this->get($url);
+
+        $response->assertStatus(200);
+        $this->assertEquals('image/png', $response->headers->get('Content-Type'));
+
+        // Assert that the remote source file is deleted after the request
+        $remoteSourcePath = storage_path('app/'.config('glide-images.cache').'/.remote-sources/'.md5($externalUrl));
+        $this->assertFileDoesNotExist($remoteSourcePath);
+    }
 }

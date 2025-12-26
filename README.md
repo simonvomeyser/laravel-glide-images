@@ -12,7 +12,10 @@ It's aimed for ease of use and simplicity, just install this and use the `glide(
 <img src="{{ glide('images/image.jpg', 500) }}">
 
 <!-- will generate an 500x500 image in grayscale -->
-<img src="{{ glide('images/image.jpg', ['w' => 500, 'h'=> 500 'filt' => 'grayscale']) }}">
+<img src="{{ glide('images/image.jpg', ['w' => 500, 'h'=> 500, 'filt' => 'grayscale']) }}">
+
+<!-- will also work with external urls -->
+<img src="{{ glide('https://some-domain.com/image.png', 400) }}">
 
 <!-- will also work -->
 <img src="{{ glide(url('images/image.jpg')) }}">
@@ -34,7 +37,15 @@ php artisan vendor:publish --tag="glide-images-config"
 
 ## Usage
 
-wip
+The `glide()` helper allows you to generate URLs for image manipulations on the fly. 
+
+### External URLs
+
+You can also pass external URLs to the `glide()` helper. The package will automatically download the remote image, process it, and cache the result. To save disk space, the original remote image is deleted after the manipulated version has been generated and cached.
+
+```blade
+<img src="{{ glide('https://external-domain.com/photo.jpg', 600) }}">
+```
 
 ## Testing
 

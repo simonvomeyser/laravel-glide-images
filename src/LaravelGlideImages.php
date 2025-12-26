@@ -12,9 +12,10 @@ class LaravelGlideImages
             return '';
         }
 
-        // first, remove possible already existing glide endpoint from the path
-        // this way, we can do something like glide(glide('path/to/image.jpg', 'w=100'), 'h=100'); and it will work
-        $cleanPathToImage = str_replace('/'.config('glide-images.endpoint'), '', $pathToImage);
+        $endpoint = config('glide-images.endpoint');
+
+        // Remove the endpoint from the path if it's already there (to avoid duplication)
+        $cleanPathToImage = str_replace('/'.$endpoint, '', $pathToImage);
 
         // Prepend the url with the base url if it doesn't start with http or https
         $leadingHttpPattern = "/^(http:\/\/|https:\/\/)/";
@@ -22,26 +23,40 @@ class LaravelGlideImages
             $cleanPathToImage :
             url($cleanPathToImage);
 
-        // if the url now does not contain our app url, we have a url to another domain
-        // so we don't want to prepend the glide endpoint
-        if (! str_contains($url, config('app.url'))) {
-            return $pathToImage;
-        }
-
         $urlComponents = parse_url($url);
         $originalUrlArgs = [];
 
+        // If the original URL has query parameters, we extract them to merge with new args
         if (isset($urlComponents['query'])) {
             parse_str($urlComponents['query'], $originalUrlArgs);
         }
 
-        // prepend the glide endpoint to the url
-        $urlComponents['path'] = '/'.config('glide-images.endpoint').$urlComponents['path'];
+        // if the url now does not contain our app url, we have a url to another domain
+        $isExternal = ! str_contains($url, (string) config('app.url'));
 
+        // We strip the query string from the path as it will be handled via the $args merge
+        $urlWithoutQuery = explode('?', $url)[0];
+
+        $appUrlComponents = parse_url((string) config('app.url'));
+        $urlComponents['scheme'] = $appUrlComponents['scheme'] ?? null;
+        $urlComponents['host'] = $appUrlComponents['host'] ?? null;
+        $urlComponents['port'] = $appUrlComponents['port'] ?? null;
+
+        // For external images, the entire original URL becomes part of the Glide path
+        if ($isExternal) {
+            $urlComponents['path'] = '/'.$endpoint.'/'.$urlWithoutQuery;
+        } else {
+            $urlComponents['path'] = '/'.$endpoint.$urlComponents['path'];
+        }
+
+        $urlComponents['query'] = null; // Important: Clear query as it's now part of the path (or will be re-added)
+
+        // Handle shorthand for width (e.g., glide('img.jpg', 400))
         if (is_string($args)) {
             $args = ['w' => $args];
         }
 
+        // Apply default configuration for fit and quality if not specified
         if (! array_key_exists('fit', $args)) {
             $args['fit'] = config('glide-images.fit');
         }
@@ -57,6 +72,7 @@ class LaravelGlideImages
 
         $url = $this->unparseUrl($urlComponents);
 
+        // If security is enabled, we append a signature to the URL
         if (config('glide-images.secure')) {
             $urlWithoutParams = explode('?', $url)[0];
             $httpSignatureFactory = SignatureFactory::create(config('app.key'));
