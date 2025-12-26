@@ -29,7 +29,7 @@ composer require simonvomeyser/laravel-glide-images
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag="laravel-glide-images-config"
+php artisan vendor:publish --tag="glide-images-config"
 ```
 
 ## Usage

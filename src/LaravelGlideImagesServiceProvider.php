@@ -21,7 +21,7 @@ class LaravelGlideImagesServiceProvider extends PackageServiceProvider
         ]);
 
         $package
-            ->name('laravel-glide-images')
+            ->name('glide-images')
             ->hasRoute('web')
             ->hasConfigFile()
             ->hasCommand(ClearGlideImagesCommand::class);
