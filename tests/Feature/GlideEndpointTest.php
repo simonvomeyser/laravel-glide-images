@@ -52,15 +52,11 @@ class GlideEndpointTest extends TestCase
 
     public function test_for_valid_signature_but_file_not_found_exception()
     {
-        $this->withoutExceptionHandling();
-
         $url = glide('image/test.jpg', 100);
-
-        $this->expectException(FileNotFoundException::class);
 
         $response = $this->get($url);
 
-        $response->assertStatus(500);
+        $response->assertStatus(404);
     }
 
     public function test_for_valid_signature_and_file_exists()
@@ -120,7 +116,7 @@ class GlideEndpointTest extends TestCase
         \Illuminate\Support\Facades\Http::assertSentCount(1); // Still 1
     }
 
-    public function test_fails_if_remote_url_is_not_an_image()
+    public function test_redirects_if_remote_url_is_not_an_image()
     {
         $externalUrl = 'https://example.com/not-an-image.txt';
         $url = glide($externalUrl, 100);
@@ -131,6 +127,22 @@ class GlideEndpointTest extends TestCase
 
         $response = $this->get($url);
 
-        $response->assertStatus(404);
+        $response->assertRedirect($externalUrl);
+    }
+
+    public function test_it_returns_original_file_if_glide_fails()
+    {
+        $url = glide('images/corrupted.png', 100);
+
+        Storage::fake();
+        // Put invalid content in the "image"
+        Storage::disk('glide_public_path')->put('images/corrupted.png', 'not an image content');
+
+        // We need to mock Log to assert it was called
+        \Illuminate\Support\Facades\Log::shouldReceive('warning')->once();
+
+        $response = $this->get($url);
+
+        $response->assertStatus(200);
     }
 }

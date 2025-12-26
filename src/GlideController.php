@@ -4,6 +4,7 @@ namespace SimonVomEyser\LaravelGlideImages;
 
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use League\Glide\Responses\SymfonyResponseFactory;
 use League\Glide\ServerFactory;
@@ -15,41 +16,56 @@ class GlideController
     public function __invoke(Filesystem $filesystem, $path)
     {
         $this->validateSignature();
+        $isRemote = filter_var($path, FILTER_VALIDATE_URL);
 
-        $params = request()->except(['expires', 'signature', 's']);
-        $source = Storage::disk('glide_public_path')->path('');
-        $isRemote = false;
+        try {
 
-        // If the path is a valid URL and doesn't exist locally as a file,
-        // we treat it as a remote image and download it for processing.
-        if (! file_exists($source.'/'.$path) && filter_var($path, FILTER_VALIDATE_URL)) {
-            $isRemote = true;
-            $remoteSourceFilename = md5($path);
+            $params = request()->except(['expires', 'signature', 's']);
+            $source = Storage::disk('glide_public_path')->path('');
 
-            if ($this->cacheFileExists($filesystem, $remoteSourceFilename, $params)) {
-                $path = $remoteSourceFilename;
-            } else {
-                $path = $this->downloadRemoteImage($path);
+            // If the path is a valid URL and doesn't exist locally as a file,
+            // we treat it as a remote image and download it for processing.
+            if ($isRemote) {
+                $remoteSourceFilename = md5($path);
+
+                if ($this->cacheFileExists($filesystem, $remoteSourceFilename, $params)) {
+                    $path = $remoteSourceFilename;
+                } else {
+                    $path = $this->downloadRemoteImage($path);
+                }
+
+                $source = $this->getRemoteSourceDirectory();
             }
 
-            $source = $this->getRemoteSourceDirectory();
+            $server = ServerFactory::create([
+                'response' => new SymfonyResponseFactory(app('request')),
+                'source' => $source,
+                'cache' => $filesystem->getDriver(),
+                'cache_path_prefix' => config('glide-images.cache'),
+                'max_image_size' => config('glide-images.max_image_size'),
+            ]);
+
+            $response = $server->getImageResponse($path, $params);
+
+            if ($isRemote && file_exists($fullPath = $source . '/' . $path)) {
+                unlink($fullPath);
+            }
+
+            return $response;
+
+        } catch (\Exception $e) {
+            // Log the message, return the original image
+            Log::warning($e->getMessage());
+
+            if ($isRemote) {
+                return redirect($path);
+            }
+
+            return file_exists(public_path($path))
+                ? response()->file(public_path($path))
+                : abort(404);
         }
 
-        $server = ServerFactory::create([
-            'response' => new SymfonyResponseFactory(app('request')),
-            'source' => $source,
-            'cache' => $filesystem->getDriver(),
-            'cache_path_prefix' => config('glide-images.cache'),
-            'max_image_size' => config('glide-images.max_image_size'),
-        ]);
-
-        $response = $server->getImageResponse($path, $params);
-
-        if ($isRemote && file_exists($fullPath = $source.'/'.$path)) {
-            unlink($fullPath);
-        }
-
-        return $response;
     }
 
     private function cacheFileExists(Filesystem $filesystem, $path, array $params)
@@ -65,25 +81,25 @@ class GlideController
 
     private function getRemoteSourceDirectory()
     {
-        return storage_path('app/'.config('glide-images.cache').'/.remote-sources');
+        return storage_path('app/' . config('glide-images.cache') . '/.remote-sources');
     }
 
     private function downloadRemoteImage($url)
     {
         $directory = $this->getRemoteSourceDirectory();
 
-        if (! is_dir($directory)) {
+        if (!is_dir($directory)) {
             mkdir($directory, 0755, true);
         }
 
         $filename = md5($url);
-        $path = $directory.'/'.$filename;
+        $path = $directory . '/' . $filename;
 
         // Only download if we don't already have it (though it should be deleted after each request)
-        if (! file_exists($path)) {
+        if (!file_exists($path)) {
             $response = Http::get($url);
 
-            if ($response->failed() || ! $this->isImage($response)) {
+            if ($response->failed() || !$this->isImage($response)) {
                 abort(404, 'Remote image not found');
             }
 
@@ -102,7 +118,7 @@ class GlideController
 
     private function validateSignature()
     {
-        if (! config('glide-images.secure')) {
+        if (!config('glide-images.secure')) {
             return;
         }
 
