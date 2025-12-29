@@ -3,7 +3,6 @@
 namespace SimonVomEyser\LaravelGlideImages\Tests\Feature;
 
 use Illuminate\Support\Facades\Storage;
-use League\Glide\Filesystem\FileNotFoundException;
 use SimonVomEyser\LaravelGlideImages\Tests\TestCase;
 
 class GlideEndpointTest extends TestCase
@@ -41,6 +40,7 @@ class GlideEndpointTest extends TestCase
 
         return rmdir($dir);
     }
+
     public function test_for_existence_of_endpoint()
     {
         $glideEndpoint = config('glide-images.endpoint');

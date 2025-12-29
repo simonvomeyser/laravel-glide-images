@@ -48,7 +48,7 @@ class GlideController
 
             $response = $server->getImageResponse($path, $params);
 
-            if ($isRemote && file_exists($fullPath = $source . '/' . $path)) {
+            if ($isRemote && file_exists($fullPath = $source.'/'.$path)) {
                 unlink($fullPath);
             }
 
@@ -57,9 +57,9 @@ class GlideController
         } catch (\Exception $e) {
             // Log the message, return the original image
             Log::warning('Laravel Glide Images Error', [
-                    'message' => $e->getMessage(),
-                    'path' => $originalPath,
-                ]
+                'message' => $e->getMessage(),
+                'path' => $originalPath,
+            ]
             );
 
             if ($isRemote) {
@@ -86,26 +86,26 @@ class GlideController
 
     private function getRemoteSourceDirectory()
     {
-        return storage_path('app/' . config('glide-images.cache') . '/.remote-sources');
+        return storage_path('app/'.config('glide-images.cache').'/.remote-sources');
     }
 
     private function downloadRemoteImage($url)
     {
         $directory = $this->getRemoteSourceDirectory();
 
-        if (!is_dir($directory)) {
+        if (! is_dir($directory)) {
             mkdir($directory, 0755, true);
         }
 
         $filename = md5($url);
-        $path = $directory . '/' . $filename;
+        $path = $directory.'/'.$filename;
 
         // Only download if we don't already have it (though it should be deleted after each request)
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             // Since sometimes providers can be slow or flaky, retry 3 times
             $response = Http::retry(3, 50)->get($url);
 
-            if ($response->failed() || !$this->isImage($response)) {
+            if ($response->failed() || ! $this->isImage($response)) {
                 abort(404, 'Remote image not found');
             }
 
@@ -124,7 +124,7 @@ class GlideController
 
     private function validateSignature()
     {
-        if (!config('glide-images.secure')) {
+        if (! config('glide-images.secure')) {
             return;
         }
 
