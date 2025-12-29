@@ -97,7 +97,8 @@ class GlideController
 
         // Only download if we don't already have it (though it should be deleted after each request)
         if (!file_exists($path)) {
-            $response = Http::get($url);
+            // Since sometimes providers can be slow or flaky, retry 3 times
+            $response = Http::retry(3, 50)->get($url);
 
             if ($response->failed() || !$this->isImage($response)) {
                 abort(404, 'Remote image not found');
