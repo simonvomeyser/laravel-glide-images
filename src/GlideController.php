@@ -17,6 +17,7 @@ class GlideController
     {
         $this->validateSignature();
         $isRemote = filter_var($path, FILTER_VALIDATE_URL);
+        $originalPath = $path;
 
         try {
 
@@ -55,14 +56,18 @@ class GlideController
 
         } catch (\Exception $e) {
             // Log the message, return the original image
-            Log::warning($e->getMessage());
+            Log::warning('Laravel Glide Images Error', [
+                    'message' => $e->getMessage(),
+                    'path' => $originalPath,
+                ]
+            );
 
             if ($isRemote) {
-                return redirect($path);
+                return redirect($originalPath);
             }
 
-            return file_exists(public_path($path))
-                ? response()->file(public_path($path))
+            return file_exists(public_path($originalPath))
+                ? response()->file(public_path($originalPath))
                 : abort(404);
         }
 
