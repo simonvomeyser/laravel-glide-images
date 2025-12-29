@@ -2,7 +2,13 @@
 
 All notable changes to `laravel-glide-images` will be documented in this file.
 
-## External URLs and publish config file bug - 2025-01-02
+## 0.1.1 - Avoid multiple downloads of remote images - 2025-12-29
+
+- Avoid multiple downloads of remote images
+- Try multiple times to download remote images if they fail
+- Improve Logging
+
+## 0.1.0 - External URLs and publish config file bug - 2025-12-26
 
 - Support for external URLs in `glide()` helper. Remote images are automatically downloaded, processed, and cached.
 - Fixed bug where config file was not published #7
